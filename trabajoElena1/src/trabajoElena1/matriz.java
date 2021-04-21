@@ -19,7 +19,7 @@ public class matriz {
 			System.out.println("7. Potencia de una matriz cuadrada");
 			System.out.println("8. Resta de dos matrices");
 			System.out.println("SALIR");
-			System.out.println("");
+			System.out.println("EE");
 			
 			
 		}
