@@ -33,22 +33,17 @@ public class matriz {
 				break;
 			case 4: 
 				trasponer();
-				System.out.println("\n");
 				break;
 			case 5: 
 				diagonal();
-				System.out.println("\n");
 				break;
 			case 6: 
 				simetrica();
-				System.out.println("\n");
 				break;
 			case 7: 
 				nuevaMatriz();
-				System.out.println("\n");
 				break;
 			case 8: 
-				System.out.println("\n");
 				break;
 			case 9: 
 				salir = true;
