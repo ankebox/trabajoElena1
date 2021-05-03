@@ -1,4 +1,7 @@
+//DAVID AICARDO COSSIO PULIDO 
 package trabajoElena1;
+import java.util.Arrays;
+//package cdn1.david;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -23,7 +26,6 @@ public class matriz {
 			switch(opcion) {
 			case 1: 
 				sumar();
-				
 				break;
 			case 2: 
 				escalarMatriz();
@@ -41,9 +43,10 @@ public class matriz {
 				simetrica();
 				break;
 			case 7: 
-				nuevaMatriz();
+				potencia();
 				break;
 			case 8: 
+				restar();
 				break;
 			case 9: 
 				salir = true;
@@ -66,16 +69,9 @@ public class matriz {
 	public static void sumar() {
 		int matriz1[][] = nuevaMatriz() ;
 		int matriz2[][] = nuevaMatriz() ;
-		int matrizResultado[][] = new int[matriz1.length][matriz1[0].length];
-		
-		for(int i = 0; i < matriz1.length; i++) {
-			for(int j = 0; j < matriz1[0].length; j++) {
-				matrizResultado[i][j] = matriz1[i][j] + matriz2[i][j];
-			}
-		}
+		int matrizResultado[][] = sumarMaster(matriz1, matriz2);
 		imprimirMatriz(matrizResultado);
 	}
-	
 	//------------------------------------------------------------------------------------------------
 	/*
 	 * Metodo para hallar producto de un escalar por una matriz 
@@ -83,14 +79,9 @@ public class matriz {
 	public static void escalarMatriz() {
 		System.out.println("Ahora crea la matriz");
 		int matriz1[][] = nuevaMatriz() ;
-		int matrizResultado[][] = new int[matriz1.length][matriz1[0].length];
 		System.out.println("Introduce un numero para multiplicar por la matriz");
 		int escalar = sn.nextInt();
-		for(int i = 0; i < matriz1.length; i++) {
-			for(int j = 0; j <matriz1[0].length; j++) {
-				matrizResultado[i][j] = escalar * matriz1[i][j];
-			}
-		}
+		int matrizResultado[][] = escalarMatrizMaster(matriz1, escalar);
 		imprimirMatriz(matrizResultado);
 	}
 	//---------------------------------------------------------------------------------------------
@@ -103,14 +94,8 @@ public class matriz {
 		int matriz1[][] = nuevaMatriz() ;
 		System.out.println("Ahora crea la segunda matriz");
 		int matriz2[][] = nuevaMatriz() ;
-		int matrizResultado[][] = new int[matriz1.length][matriz2[0].length];
-		for (int i = 0; i < matriz1.length; i++) {
-			for(int j = 0; j < matriz2[0].length; j++) {
-				for(int k = 0; k < matriz1[0].length; k++) {
-					matrizResultado[i][j] += matriz1[i][k] * matriz2[k][j];
-				}
-			}
-		}
+		int matrizResultado[][] = productoMaster(matriz1, matriz2);
+		
 		imprimirMatriz(matrizResultado);
 	}
 	//-----------------------------------------------------------------------------------------------
@@ -127,6 +112,8 @@ public class matriz {
 			}
 		}
 		imprimirMatriz(matrizResultado);
+
+		
 	}
 	//-----------------------------------------------------------------------------------------------
 	/*
@@ -141,6 +128,7 @@ public class matriz {
 				matrizResultado[i] = matriz1[i][i];
 			}
 		}
+		System.out.println(Arrays.toString(matrizResultado));
 	}
 	//-----------------------------------------------------------------------------------------------
 		/*
@@ -163,15 +151,34 @@ public class matriz {
 	}
 	//-----------------------------------------------------------------------------------------------
 		/*
-		 * Metodo para generar nueva matriz 
+		 * Metodo para hallar la potenicia de una matriz
 		 * */
 	public static void potencia() {
 		System.out.println("Ahora crea la matriz");
 		int matriz1[][] = nuevaMatriz() ;
-		int matrizResultado[][] = new int[matriz1.length][matriz1[0].length];
-		System.out.println("Introduce el numero que elevaras la matriz");
-		int exponente = sn.nextInt();
-		//ME FALTA ESTOOOOOOOOOO###############################################################################
+		if(esCuadrada(matriz1) ) {
+			System.out.println("Introduce el numero que elevaras la matriz");
+			int exponente = sn.nextInt();
+			int matrizResultado[][] = matriz1;
+			
+			
+			for(int i = 0; i < (exponente-1); i++) {
+				matrizResultado = productoMaster(matrizResultado, matriz1);
+			}
+			imprimirMatriz(matrizResultado);
+		}
+	}
+	//------------------------------------------------------------------------------------------------------
+	/*
+	 * Metodo para hallar la resta de dos matrices
+	 * @param  
+	 * */
+	public static void restar() {
+		int matriz1[][] = nuevaMatriz() ;
+		int matriz2[][] = nuevaMatriz() ;
+		matriz2 = escalarMatrizMaster(matriz2, -1);
+		int matrizResultado[][] = sumarMaster(matriz1, matriz2);
+		imprimirMatriz(matrizResultado);
 	}
 	//-----------------------------------------------------------------------------------------------
 	/*
@@ -200,9 +207,9 @@ public class matriz {
 	 * */
 	public static void imprimirMatriz(int m1[][]) {
 		int n = m1.length;
-		System.out.println("m: " + n);
+		//System.out.println("m: " + n);
 		int m = m1[0].length;
-		System.out.println("n: " + m);
+		//System.out.println("n: " + m);
 
 		for(int i=0; i<n; i++) {
 			System.out.println("\n");
@@ -223,5 +230,63 @@ public class matriz {
 			return false;
 		}
 		return true;
+	}
+	//---------------------------------------------------------------------------------------------------
+		/*
+		 * Metodo para hacer poder usar suma de dos matrices cuando la necesite
+		 * @param  matriz1 matriz 
+		 * @param  matriz2 matriz2 
+		 * */
+	public static int[][] sumarMaster(int matriz1[][], int matriz2[][]) {
+		int matrizResultado[][] = new int[matriz1.length][matriz1[0].length];
+		if((matriz1.length == matriz2.length) && (matriz1[0].length == matriz2[0].length)) {
+			for(int i = 0; i < matriz1.length; i++) {
+				for(int j = 0; j < matriz1[0].length; j++) {
+					matrizResultado[i][j] = matriz1[i][j] + matriz2[i][j];
+				}
+			}
+		}
+		else {
+			System.out.println("Para poder sumar debes introducir dos matrices que tengan la misma dimension");
+		}
+		return matrizResultado;
+	}
+	//---------------------------------------------------------------------------------------------------
+		/*
+		 * Metodo para hacer multiplicar matrices cuando lo necesite
+		 * @param  matriz1 matriz  
+		 * @param  matriz2 matriz
+		 * */
+	public static int[][] productoMaster (int matriz1[][], int matriz2[][]) {
+		int matrizResultado[][] = new int[matriz1.length][matriz2[0].length];
+		if(matriz1.length != matriz2[0].length) {
+			System.out.println("introduzca matrices que matriz1.length sea igual a matriz2[0].length");
+		}
+		else {
+			for (int i = 0; i < matriz1.length; i++) {
+				for(int j = 0; j < matriz2[0].length; j++) {
+					for(int k = 0; k < matriz1[0].length; k++) {
+						matrizResultado[i][j] += matriz1[i][k] * matriz2[k][j];
+					}
+				}
+			}
+		}
+		return matrizResultado;
+		
+	}
+	//---------------------------------------------------------------------------------------------------
+		/*
+		 * Metodo para multiplicar matrices por un numero cuando lo necesite
+		 * @param  matriz1 matriz  
+		 * @param escalar numero 
+		 * */
+	public static int[][] escalarMatrizMaster(int matriz1[][], int escalar) {
+		int matrizResultado[][] = new int[matriz1.length][matriz1[0].length];
+		for(int i = 0; i < matriz1.length; i++) {
+			for(int j = 0; j <matriz1[0].length; j++) {
+				matrizResultado[i][j] = escalar * matriz1[i][j];
+			}
+		}
+		return matrizResultado;
 	}
 }
